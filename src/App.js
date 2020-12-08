@@ -1,17 +1,11 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
-import Typography from '@material-ui/core/Typography';
-import { Card, CardContent, Container, Grid } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Button from '@material-ui/core/Button';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Switch from '@material-ui/core/Switch';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
+import {
+    Button, Card, CardContent, Container, Grid, FormControlLabel,
+    FormGroup, Paper, Radio, RadioGroup, Switch, TextField, Typography
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,38 +48,25 @@ const useStyles = makeStyles((theme) => ({
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-
-// const AlertBox = () => {
-
-
-//     return (
-//         <div>
-//             <Alert severity="error">Waktu beristirahat, tidak baik untuk menghubungi Dosen</Alert>
 //             <Alert severity="warning">Waktu untuk beribadah, tidak tepat untuk menghubungi Dosen</Alert>
-//             <Alert severity="success">Waktu yang tepat untuk menghubungi Dosen</Alert>
-//         </div>
-//     )
-// }
 
 
 const TimeReminder = () => {
     const classes = useStyles();
 
-    var date = new Date();
-
     const [currentDate, setCurrentDate] = useState(new Date().toLocaleTimeString());
 
-    const [nomorDosen, setNomorDosen] = useState('+6282230475617');
+    const [nomorDosen, setNomorDosen] = useState('');
 
-    const [nama, setNama] = useState('Nabilla');
+    const [nama, setNama] = useState('');
 
-    const [kelas, setKelas] = useState('TI5A');
+    const [kelas, setKelas] = useState('');
 
-    const [tujuan, setTujuan] = useState('Mohon bimbingan KP.');
+    const [tujuan, setTujuan] = useState('');
 
-    const [pertanyaan, setPertanyaan] = useState('Kapan bapak ada waktu?');
+    const [pertanyaan, setPertanyaan] = useState('');
 
-    const [ucapanPenutup, setUcapanPenutup] = useState('Terima kasih pak.');
+    const [ucapanPenutup, setUcapanPenutup] = useState('');
 
     const [adalahPria, setAdalahPria] = React.useState({
         status: true,

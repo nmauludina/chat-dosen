@@ -54,6 +54,8 @@ function Alert(props) {
 const TimeReminder = () => {
     const classes = useStyles();
 
+    const date = new Date();
+
     const [currentDate, setCurrentDate] = useState(new Date().toLocaleTimeString());
 
     const [nomorDosen, setNomorDosen] = useState('');

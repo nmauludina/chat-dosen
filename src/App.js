@@ -1,5 +1,5 @@
 import './App.css';
-import MuiAlert from '@material-ui/lab/Alert';
+import { useSnackbar } from 'notistack';
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -42,12 +42,11 @@ const useStyles = makeStyles((theme) => ({
             display: 'none',
         },
     },
+    hourDisplay: {
+        fontFamily: 'Digital-7 Font',
+    },
 }));
 
-
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 //             <Alert severity="warning">Waktu untuk beribadah, tidak tepat untuk menghubungi Dosen</Alert>
 
 
@@ -55,6 +54,12 @@ const TimeReminder = () => {
     const classes = useStyles();
 
     const date = new Date();
+
+    const [rightTime, setRightTime] = useState({
+        status: true,
+        value: "Waktu yang tepat untuk menghubungi Dosen",
+        variant: "success"
+    });
 
     const [currentDate, setCurrentDate] = useState(new Date().toLocaleTimeString());
 
@@ -82,26 +87,10 @@ const TimeReminder = () => {
 
     const [message, setMessage] = useState('');
 
+    const { enqueueSnackbar } = useSnackbar();
+
     const sendMessage = () => {
         window.open(`http://wa.me/${nomorDosen}?text=${message}`, '_blank')
-    };
-
-    const getCurrentHour = () => {
-        let currentHour = date.getHours();
-        if (currentHour > 5 && currentHour < 21) {
-            return (
-                <>
-                    <Alert style={{ marginBottom: '24px' }} severity="success">Waktu yang tepat untuk menghubungi Dosen</Alert>
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <Alert style={{ marginBottom: '24px' }} severity="error">Waktu yang tidak tepat untuk menghubungi Dosen</Alert>
-                </>
-            );
-        }
-
     };
 
     const handleChange = (event) => {
@@ -141,6 +130,25 @@ const TimeReminder = () => {
         }
     };
 
+    const handleHour = () => {
+
+        let currentHour = date.getHours();
+        setRightTime(prevState => ({
+            ...prevState,
+            status: (currentHour > 5 && currentHour < 21) ? true : false,
+            value: (rightTime.status ? "Waktu yang tepat untuk menghubungi Dosen" : "Waktu yang tidak tepat untuk menghubungi Dosen"),
+            variant: rightTime.status ? 'success' : 'error',
+        }));
+
+        enqueueSnackbar(rightTime.value, {
+            variant: rightTime.variant,
+            anchorOrigin: {
+                vertical: 'top',
+                horizontal: 'center',
+            },
+        });
+    };
+
     useEffect(() => {
         let secTimer = setInterval(() => {
             setCurrentDate(new Date().toLocaleTimeString())
@@ -159,20 +167,19 @@ const TimeReminder = () => {
 
     return (
         <React.Fragment>
+
             <Paper elevation={3} className={classes.root}>
                 <form noValidate autoComplete="off">
 
                     <Grid container direction="row" justify="space-around" alignItems="flex-start" spacing={6}>
                         <Grid item sm={12} md={6}>
 
-                            {getCurrentHour()}
-
-                            <Card className={classes.inputText}>
+                            <Card className={classes.inputText} onClick={handleHour}>
                                 <CardContent>
                                     <Typography className={classes.title} color="textSecondary" >
                                         Sekarang jam
                                     </Typography>
-                                    <Typography variant="h2" component="h2">
+                                    <Typography variant="h2" component="h2" className={classes.hourDisplay}>
                                         {currentDate}
                                     </Typography>
                                 </CardContent>

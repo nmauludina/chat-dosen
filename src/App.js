@@ -90,8 +90,19 @@ const TimeReminder = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const sendMessage = () => {
-        window.open(`http://wa.me/${nomorDosen}?text=${message}`, '_blank')
+        const newNumberDosen = fixPhone(nomorDosen)
+        window.open(`http://wa.me/${newNumberDosen}?text=${message}`, '_blank')
     };
+
+    const fixPhone = (phone) => {
+        const regex = '^6[2]'
+
+        if (phone.search(regex)) {
+          return `62${parseInt(phone)}`
+        } else {
+          return `${parseInt(phone)}`
+        }
+    }
 
     const handleChange = (event) => {
         if (event.target.name === "nomor dosen") {
